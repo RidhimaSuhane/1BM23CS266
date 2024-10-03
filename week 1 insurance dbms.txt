@@ -1,0 +1,249 @@
+Enter password: **********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 19
+Server version: 8.0.39 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database insurance1;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use insurance1;
+Database changed
+mysql> create table person1 (driver_id varchar(10),name varchar(20), address varchar(30), primary key(driver_id));
+Query OK, 0 rows affected (0.29 sec)
+
+mysql> create table accident1(report_num int, accident_date date, location varchar(20),primary key(report_num));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table car1(reg_num varchar(10),model varchar(10),year int,primary key(reg_num));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table participated1(driver_id varchar(10), reg_num varchar(10), report_num int, damage_amount int, primary key(driver_id, reg_num, report_num), foreign key(driver_id) references person1(driver_id), foreign key(reg_num) references car1(reg_num), foreign key(report_num) references accident1(report_num));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql>  create table owns1(driver_id varchar(10),reg_num varchar(10),primary key(driver_id, reg_num),foreign key(driver_id) references person1(driver_id),foreign key(reg_num) references car1(reg_num));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc person1;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| driver_id | varchar(10) | NO   | PRI | NULL    |       |
+| name      | varchar(20) | YES  |     | NULL    |       |
+| address   | varchar(30) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> desc car1;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| reg_num | varchar(10) | NO   | PRI | NULL    |       |
+| model   | varchar(10) | YES  |     | NULL    |       |
+| year    | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc accident1;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| report_num    | int         | NO   | PRI | NULL    |       |
+| accident_date | date        | YES  |     | NULL    |       |
+| location      | varchar(20) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc owns1;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| driver_id | varchar(10) | NO   | PRI | NULL    |       |
+| reg_num   | varchar(10) | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc participated1;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| driver_id     | varchar(10) | NO   | PRI | NULL    |       |
+| reg_num       | varchar(10) | NO   | PRI | NULL    |       |
+| report_num    | int         | NO   | PRI | NULL    |       |
+| damage_amount | int         | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into person1 values ('A01','RICHARD','SRINIVAS NAGAR');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into person1 values ('A02','PRADEED','RAJAJI NAGAR');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into person1 values ('A03','SMITH','ASHOK NAGAR');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into person1 values ('A04','VENU','NR COLONY');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into person1 values ('A05','JHON','HANUMANTH NAGAR');
+Query OK, 1 row affected (0.01 sec)
+ sharing
+We do not store your data in database cause we do not
+mysql> select * from person1;
++-----------+---------+-----------------+
+| driver_id | name    | address         |
++-----------+---------+-----------------+
+| A01       | RICHARD | SRINIVAS NAGAR  |
+| A02       | PRADEED | RAJAJI NAGAR    |
+| A03       | SMITH   | ASHOK NAGAR     |
+| A04       | VENU    | NR COLONY       |
+| A05       | JHON    | HANUMANTH NAGAR |
++-----------+---------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql>  insert into accident1 values(11,'2003-01-01','mysore road');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into accident1 values(12,'2004-02-02','south end circle');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into accident1 values(13,'2003-01-21','bull temple road');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into accident1 values(14,'2008-02-17','mysore road');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into accident1 values(15,'2004-03-05','kanakpura road');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from accident1;
++------------+---------------+------------------+
+| report_num | accident_date | location         |
++------------+---------------+------------------+
+|         11 | 2003-01-01    | mysore road      |
+|         12 | 2004-02-02    | south end circle |
+|         13 | 2003-01-21    | bull temple road |
+|         14 | 2008-02-17    | mysore road      |
+|         15 | 2004-03-05    | kanakpura road   |
++------------+---------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into owns1 values('A01','KA052250');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into owns1 values('A02','KA053408');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into owns1 values('A03','KA031181');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into owns1 values('A04','KA041702');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into owns1 values('A05','KA095477');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from owns1;
++-----------+----------+
+| driver_id | reg_num  |
++-----------+----------+
+| A03       | KA031181 |
+| A04       | KA041702 |
+| A01       | KA052250 |
+| A02       | KA053408 |
+| A05       | KA095477 |
++-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> insert into participated1 values('A01','KA052250',11,10000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into participated1 values('A02','KA053408',12,50000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into participated1 values('A03','KA031181',13,25000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into participated1 values('A04','KA041702',14,3000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into participated1 values('A05','KA095477',15,5000);
+Query OK, 1 row affected (0.52 sec)
+
+mysql> select * from participated1;
++-----------+----------+------------+---------------+
+| driver_id | reg_num  | report_num | damage_amount |
++-----------+----------+------------+---------------+
+| A01       | KA052250 |         11 |         10000 |
+| A02       | KA053408 |         12 |         50000 |
+| A03       | KA031181 |         13 |         25000 |
+| A04       | KA041702 |         14 |          3000 |
+| A05       | KA095477 |         15 |          5000 |
++-----------+----------+------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> select accident_date,location from accident1;
++---------------+------------------+
+| accident_date | location         |
++---------------+------------------+
+| 2003-01-01    | mysore road      |
+| 2004-02-02    | south end circle |
+| 2003-01-21    | bull temple road |
+| 2008-02-17    | mysore road      |
+| 2004-03-05    | kanakpura road   |
++---------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> update participated1 set damage_amount=50000 where reg_num='KA053408'and report_num=12;
+Query OK, 0 rows affected (0.02 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from participated1;
++-----------+----------+------------+---------------+
+| driver_id | reg_num  | report_num | damage_amount |
++-----------+----------+------------+---------------+
+| A01       | KA052250 |         11 |         10000 |
+| A02       | KA053408 |         12 |         50000 |
+| A03       | KA031181 |         13 |         25000 |
+| A04       | KA041702 |         14 |          3000 |
+| A05       | KA095477 |         15 |          5000 |
++-----------+----------+------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into accident1 values(16,'15-03-08','dolmur');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from accident1;
++------------+---------------+------------------+
+| report_num | accident_date | location         |
++------------+---------------+------------------+
+|         11 | 2003-01-01    | mysore road      |
+|         12 | 2004-02-02    | south end circle |
+|         13 | 2003-01-21    | bull temple road |
+|         14 | 2008-02-17    | mysore road      |
+|         15 | 2004-03-05    | kanakpura road   |
+|         16 | 2015-03-08    | dolmur           |
++------------+---------------+------------------+
+6 rows in set (0.00 sec)
+
+mysql> select driver_id from participated1 where damage_amount>=25000;
++-----------+
+| driver_id |
++-----------+
+| A02       |
+| A03       |
++-----------+
+2 rows in set (0.00 sec)
+
+
