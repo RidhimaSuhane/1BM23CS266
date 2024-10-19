@@ -1,0 +1,89 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define max 5
+int stack[max];
+int top=-1;
+void push(int value)
+{
+    if(top==max-1)
+    {
+        printf("stack overflow!\n");
+        printf("cannot push %d into the stack\n",value);
+    }
+    else
+    {
+        top++;
+        stack[top]=value;
+        printf("%d pushed into the stack\n",value);
+    }
+    printf("element pushed\n");
+}
+void pop()
+{
+
+    if(top==-1)
+    {
+
+        printf("stack underflow!\n");
+        printf("cannot pop %d into the stack\n",value);
+    }
+    else
+    {
+        printf("%d popped into the stack\n",value);
+        top--;
+    }
+
+}
+void display()
+{
+    if(top==-1)
+    {
+
+        printf("stack is empty\n");
+    }
+    else
+    {
+        printf("stack elements are:\n"); 
+        for(int j=top;j>=0;j--)
+        {
+            printf("%d\t",stack[j]);
+        }
+    }
+}
+int main()
+{
+
+    int CHOICE,value;
+    while(1)
+    {
+        printf("choose an operation from below:\n");
+        printf("1.PUSH\n");
+        printf("1.POP\n");
+        printf("1.DISPLAY\n");
+        printf("1.EXIT\n");
+        printf("Enter the choice:\n");
+        scanf("%d",&CHOICE);
+      
+        switch(CHOICE)
+        {
+        case 1:
+            printf("enter the number:\n");
+            scanf("%d",&value);
+            push(value);
+            break;
+        case 2:
+            pop();
+            break;
+        case 3:
+            display();
+            break;
+        case 4:
+            exit(0);
+        default:
+            printf("TRY AGAIN!");
+
+        }
+    }
+}
+
+
