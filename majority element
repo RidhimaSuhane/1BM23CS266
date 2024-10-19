@@ -1,0 +1,21 @@
+int majorityElement(int* nums, int numsSize) {
+     int i;
+      int maj=nums[0]; 
+      int cnt=0; 
+      for(i=0;i<numsSize;i++)
+      { 
+        if(cnt==0)
+        { 
+            maj=nums[i];
+        } 
+        if(nums[i]==maj)
+        {
+             cnt++; 
+        } 
+        else
+        { 
+            cnt--; 
+        } 
+    } 
+    return maj;
+}
