@@ -1,0 +1,142 @@
+Enter password: **********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.39 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use insurance1;
+Database changed
+mysql> select * from person1;
++-----------+---------+-----------------+
+| driver_id | name    | address         |
++-----------+---------+-----------------+
+| A01       | RICHARD | SRINIVAS NAGAR  |
+| A02       | PRADEED | RAJAJI NAGAR    |
+| A03       | SMITH   | ASHOK NAGAR     |
+| A04       | VENU    | NR COLONY       |
+| A05       | JHON    | HANUMANTH NAGAR |
++-----------+---------+-----------------+
+5 rows in set (0.01 sec)
+
+mysql> select * from accident1;
++------------+---------------+------------------+
+| report_num | accident_date | location         |
++------------+---------------+------------------+
+|         11 | 2003-01-01    | mysore road      |
+|         12 | 2004-02-02    | south end circle |
+|         13 | 2003-01-21    | bull temple road |
+|         14 | 2008-02-17    | mysore road      |
+|         15 | 2004-03-05    | kanakpura road   |
+|         16 | 2015-03-08    | dolmur           |
++------------+---------------+------------------+
+6 rows in set (0.01 sec)
+
+mysql> select * from car1;
++----------+--------+------+
+| reg_num  | model  | year |
++----------+--------+------+
+| KA031181 | LANCER | 1957 |
+| KA041702 | AUDI   | 2005 |
+| KA052250 | INDICA | 1990 |
+| KA053408 | HONDA  | 2008 |
+| KA095477 | TOYOTA | 1998 |
++----------+--------+------+
+5 rows in set (0.01 sec)
+
+mysql> select * from participated1;
++-----------+----------+------------+---------------+
+| driver_id | reg_num  | report_num | damage_amount |
++-----------+----------+------------+---------------+
+| A01       | KA052250 |         11 |         10000 |
+| A02       | KA053408 |         12 |         50000 |
+| A03       | KA031181 |         13 |         25000 |
+| A04       | KA041702 |         14 |          3000 |
+| A05       | KA095477 |         15 |          5000 |
++-----------+----------+------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from owns1;
++-----------+----------+
+| driver_id | reg_num  |
++-----------+----------+
+| A03       | KA031181 |
+| A04       | KA041702 |
+| A01       | KA052250 |
+| A02       | KA053408 |
+| A05       | KA095477 |
++-----------+----------+
+5 rows in set (0.01 sec)
+
+mysql> select * from car1 order by year;
++----------+--------+------+
+| reg_num  | model  | year |
++----------+--------+------+
+| KA031181 | LANCER | 1957 |
+| KA052250 | INDICA | 1990 |
+| KA095477 | TOYOTA | 1998 |
+| KA041702 | AUDI   | 2005 |
+| KA053408 | HONDA  | 2008 |
++----------+--------+------+
+5 rows in set (0.01 sec)
+
+mysql> select count(report_num) from car1 c, participated1 p where c.reg_num
+=p.reg_num and c.model='lancer';
++-------------------+
+| count(report_num) |
++-------------------+
+|                 1 |
++-------------------+
+1 row in set (0.02 sec)
+
+mysql> select count(report_num) from car1 c, participated1 p where c.reg_num=p.reg_num and c.model='porsche';
++-------------------+
+| count(report_num) |
++-------------------+
+|                 0 |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> select count(distinct driver_id) CNT from participated1 a, accident1
+b where a.report_num=b.report_num and b.accident_date like '__08%';
++-----+
+| CNT |
++-----+
+|   1 |
++-----+
+1 row in set (0.01 sec)
+
+mysql> select * from participated1 order by damage_amount desc;
++-----------+----------+------------+---------------+
+| driver_id | reg_num  | report_num | damage_amount |
++-----------+----------+------------+---------------+
+| A02       | KA053408 |         12 |         50000 |
+| A03       | KA031181 |         13 |         25000 |
+| A01       | KA052250 |         11 |         10000 |
+| A05       | KA095477 |         15 |          5000 |
+| A04       | KA041702 |         14 |          3000 |
++-----------+----------+------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> select avg(damage_amount) from participated1;
++--------------------+
+| avg(damage_amount) |
++--------------------+
+|         18600.0000 |
++--------------------+
+1 row in set (0.01 sec)
+
+mysql> select max(damage_amount) from participated1;
++--------------------+
+| max(damage_amount) |
++--------------------+
+|              50000 |
++--------------------+
+1 row in set (0.00 sec)
+
