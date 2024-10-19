@@ -1,11 +1,11 @@
 #include<stdio.h>
 #include<string.h>
-int top=-1,pos=0,length,index1=0;
+int top=-1,pos=0,length,index0=0;
 char symbol,temp,infix[50],postfix[50],stack[50];
-void push(char);
+void push(char symbol);
 char pop();
 void infixtopostfix();
-int pref(char);
+int predefined(char);
 void main()
 {
     printf("enter the infix expression:\n");
@@ -17,31 +17,31 @@ void main()
 void infixtopostfix()
 {
     length=strlen(infix);
-    push('#');
-    while(index1<length)
+    while(index0<length)
     {
-        symbol=infix[index1];
+        symbol=infix[index0];
         switch(symbol)
         {
-            case'(':
-                push(symbol);
-                break;
+            
             case ')':
                 temp=pop();
                 while(temp!='(')
                 {
-                    postfix[pos++]=temp;
-                   
+                    postfix[pos]=temp;
+                    pos++;
                     temp=pop();
                 }
                
+                break;
+            case'(':
+                push(symbol);
                 break;
             case '*':
             case '/':
             case'^':
             case '+':
             case '-':
-                while(pref(stack[top])>=pref(symbol))
+                while(pedefined(stack[top])>=predefined(symbol))
                 {
                     temp=pop();
                     postfix[pos++]=temp;
@@ -51,7 +51,7 @@ void infixtopostfix()
             default:
                 postfix[pos++]=symbol;
             }
-            index1++;
+            index0++;
        
     }
      while(top>0)
@@ -60,11 +60,6 @@ void infixtopostfix()
             postfix[pos++]=temp;
         }
 }
-void push(char symbol)
-{
-    top++;
-    stack[top]=symbol;
-}
 char pop()
 {
     char symb;
@@ -72,29 +67,34 @@ char pop()
     top--;
     return symb;
 }
-int pref(char symbol)
+void push(char symbol)
 {
-    int num;
+    top++;
+    stack[top]=symbol;
+}
+int predefined(char symbol)
+{
+    int p;
     switch(symbol)
     {
         case '^':
-            num=3;
+            p=3;
             break;
         case '*':
         case '/':
-            num=2;
+            p=2;
             break;
         case '+':
         case '-':
-            num=1;
+            p=1;
             break;
         case '(':
-            num=0;
+            p=0;
             break;
-        case '#':
-            num=-1;
+        default:
+            p=-1;
             break;
            
     }
-    return num;
+    return p;
 }
