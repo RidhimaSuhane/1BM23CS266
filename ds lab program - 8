@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node{
+    struct node *next;
+    struct node *prev;
+    int data
+};
+struct node *start=NULL;
+
+struct node *create_list(int data) {
+    struct node *newnode = (struct node *)malloc(sizeof(struct node));
+    newnode->prev = NULL;
+    newnode->data = data;
+    newnode->next = NULL;
+    return newnode;
+}
+
+void insert_bef(struct node **ptr,int val,int newval)
+{
+    struct node *temp = *ptr;
+    while(temp!= NULL && temp ->data!= val)
+    {
+        temp=temp->next;
+    }
+    if (temp != NULL) {
+        struct node *newnode = create_list(newval);
+        newnode->next = temp;
+        newnode->prev = temp->prev;
+        if (temp->prev != NULL) {
+            temp->prev->next = newnode;
+        }
+        temp->prev = newnode;
+    }
+}
+
+
+
+void delete_pos(struct node **ptr, int val) {
+    struct node *temp = *ptr;
+    while (temp != NULL && temp->data != val) {
+        temp = temp->next;
+    }
+    if (temp != NULL) {
+        if (temp->prev != NULL) {
+            temp->prev->next = temp->next;
+        } else {
+            *ptr = temp->next;
+        }
+        if (temp->next != NULL) {
+            temp->next->prev = temp->prev;
+        }
+        free(temp);
+    }
+}
+
+
+void display_list(struct node *ptr) {
+    struct node *temp = ptr;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    struct node *ptr = NULL;
+    int choice, newval, val;
+    printf("1.create list\n2.display list\n3.insert\n4.delete");
+    while (1) {
+        printf("\nenter your choice:");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter value to create list: ");
+                scanf("%d", &newval);
+                ptr = create_list(newval);
+                printf("\ndoubly linked list created");
+                break;
+            case 2:
+                display_list(ptr);
+                break;
+            case 3:
+                printf("Enter value to insert before: ");
+                scanf("%d", &val);
+                printf("Enter new value: ");
+                scanf("%d", &newval);
+                insert_bef(&ptr, val, newval);
+                break;
+            case 4:
+                printf("Enter value to delete: ");
+                scanf("%d", &val);
+                delete_pos(&ptr, val);
+                break;
+            default:
+                exit(0);
+        }
+    }
+    return 0;
+}
