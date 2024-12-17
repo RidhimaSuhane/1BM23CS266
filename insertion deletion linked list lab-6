@@ -1,0 +1,255 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *createLL(struct node *head);
+struct node *insertBeg(struct node *head);
+struct node *insertEnd(struct node *head);
+struct node *insertPos(struct node *head);
+struct node *deleteBeg(struct node *head);
+struct node *deleteEnd(struct node *head);
+struct node *deletePos(struct node *head);
+void display(struct node *head);
+
+int main() {
+    int option;
+    struct node *head = NULL;
+
+    printf("1. Create\n2. Insert at beg\n3. Insert at end\n4. Insert at position\n5. Delete at beg\n6. Delete at end\n7. Delete at pos\n8. Display\n9. Exit\n");
+    do {
+        printf("Enter the option: ");
+        scanf("%d", &option);
+        
+        switch(option) {
+            case 1:
+                head = createLL(head);
+                break;
+            case 2:
+                head = insertBeg(head);
+                break;
+            case 3:
+                head = insertEnd(head);
+                break;
+            case 4:
+                head = insertPos(head);
+                break;
+            case 5:
+                head = deleteBeg(head);
+                break;
+            case 6:
+                head = deleteEnd(head);
+                break;
+            case 7:
+                head = deletePos(head);
+                break;
+            case 8:
+                display(head);
+                break;
+            case 9:
+                exit(0);
+                break;
+            default:
+                printf("Invalid option!!\n");
+        }
+    } while(option != 9);
+    
+    return 0;
+}
+
+struct node *createLL(struct node *head) {
+    struct node *newnode, *temp = head;
+    int num;
+    
+    printf("Enter the number: ");
+    scanf("%d", &num);
+    
+    newnode = (struct node*)malloc(sizeof(struct node));
+    if (newnode == NULL) {
+        printf("Memory allocation failed!\n");
+        return head;
+    }
+
+    newnode->data = num;
+    newnode->next = NULL;
+
+    if (head == NULL) {
+        head = newnode;
+    } else {
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newnode;
+    }
+    
+    return head;
+}
+
+struct node *insertBeg(struct node *head) {
+    struct node *newnode;
+    int num;
+
+    printf("Enter the number: ");
+    scanf("%d", &num);
+    
+    newnode = (struct node*)malloc(sizeof(struct node));
+    if (newnode == NULL) {
+        printf("Memory allocation failed!\n");
+        return head;
+    }
+
+    newnode->data = num;
+    newnode->next = head;
+    head = newnode;
+
+    return head;
+}
+
+struct node *insertEnd(struct node *head) {
+    struct node *newnode, *temp = head;
+    int num;
+
+    printf("Enter the number: ");
+    scanf("%d", &num);
+    
+    newnode = (struct node*)malloc(sizeof(struct node));
+    if (newnode == NULL) {
+        printf("Memory allocation failed!\n");
+        return head;
+    }
+
+    newnode->data = num;
+    newnode->next = NULL;
+
+    if (head == NULL) {
+        head = newnode;
+    } else {
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newnode;
+    }
+    
+    return head;
+}
+
+struct node *insertPos(struct node *head) {
+    struct node *newnode, *temp;
+    int num, pos;
+
+    printf("Enter the number and position: ");
+    scanf("%d %d", &num, &pos);
+    
+    newnode = (struct node*)malloc(sizeof(struct node));
+    if (newnode == NULL) {
+        printf("Memory allocation failed!\n");
+        return head;
+    }
+
+    newnode->data = num;
+
+    if (head == NULL || pos == 1) {
+        head = insertBeg(head);
+    } else {
+        temp = head;
+        for (int i = 1; i < pos - 1 && temp != NULL; i++) {
+            temp = temp->next;
+        }
+
+        if (temp == NULL) {
+            printf("Position out of range\n");
+            free(newnode);
+        } else {
+            newnode->next = temp->next;
+            temp->next = newnode;
+        }
+    }
+
+    return head;
+}
+
+struct node *deleteBeg(struct node *head) {
+    struct node *ptr;
+
+    if (head == NULL) {
+        printf("List is empty\n");
+    } else {
+        ptr = head;
+        head = head->next;
+        free(ptr);
+    }
+
+    return head;
+}
+
+struct node *deleteEnd(struct node *head) {
+    struct node *ptr = head, *preptr;
+
+    if (head == NULL) {
+        printf("List is empty\n");
+        return head;
+    }
+
+    if (head->next == NULL) {
+        free(head);
+        head = NULL;
+    } else {
+        while (ptr->next != NULL) {
+            preptr = ptr;
+            ptr = ptr->next;
+        }
+        preptr->next = NULL;
+        free(ptr);
+    }
+
+    return head;
+}
+
+struct node *deletePos(struct node *head) {
+    struct node *temp = head, *nodeToDelete;
+    int pos;
+
+    printf("Enter position: ");
+    scanf("%d", &pos);
+
+    if (head == NULL) {
+        printf("List is empty\n");
+        return head;
+    }
+
+    if (pos == 1) {
+        head = deleteBeg(head);
+    } else {
+        for (int i = 1; i < pos - 1 && temp != NULL; i++) {
+            temp = temp->next;
+        }
+
+        if (temp == NULL || temp->next == NULL) {
+            printf("Position out of range\n");
+        } else {
+            nodeToDelete = temp->next;
+            temp->next = nodeToDelete->next;
+            free(nodeToDelete);
+        }
+    }
+
+    return head;
+}
+
+void display(struct node *head) {
+    struct node *ptr = head;
+
+    if (head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+
+    while (ptr != NULL) {
+        printf("%d\t", ptr->data);
+        ptr = ptr->next;
+    }
+    printf("\n");
+}
